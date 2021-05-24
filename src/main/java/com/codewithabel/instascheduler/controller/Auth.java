@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class Auth {
 
-    @PostMapping("/auth")
+    @GetMapping("/auth")
     public String authenticated(@RequestParam(value = "code") String authCode, Model model)
     {
         model.addAttribute("authCode", authCode);
