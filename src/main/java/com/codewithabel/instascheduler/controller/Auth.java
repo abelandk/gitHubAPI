@@ -2,9 +2,7 @@ package com.codewithabel.instascheduler.controller;
 
 import com.codewithabel.instascheduler.controller.model.AuthModel;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,10 +75,10 @@ public class Auth {
         return "index";
     }
 
-    @GetMapping("/index")
-    public String index(@RequestParam(value = "clientId") String _clientId,
-                        @RequestParam(value = "clientSecret") String _clientSecret,
-                        Model model) {
+    @GetMapping(value = "/index", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> index(@RequestParam(value = "clientId") String _clientId,
+                                        @RequestParam(value = "clientSecret") String _clientSecret,
+                                        Model model) {
 
         clientId = _clientId;
         clientSecret = _clientSecret;
@@ -93,7 +91,9 @@ public class Auth {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        restTemplate.getForObject(authCodeRequest, String.class);
-        return "index";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity request = new HttpEntity(headers);
+
+        return restTemplate.exchange(authCodeRequest, HttpMethod.GET, request, String.class, 1);
     }
 }
