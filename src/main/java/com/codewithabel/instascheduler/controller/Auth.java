@@ -84,27 +84,16 @@ public class Auth {
 
         clientId = _clientId;
         clientSecret = _clientSecret;
-        HttpHeaders headers = new HttpHeaders();
 
-        try {
-            URI authorizeUri = new URI(authorizeUrl);
-            String authCodeRequest = "client_id=" + clientId + "&";
-            authCodeRequest += "redirect_uri=" + redirectUri + "&";
-            authCodeRequest += "scope=user_profile,user_media&";
-            authCodeRequest += "response_type=code";
+        String authCodeRequest = authorizeUrl + "?client_id=" + clientId + "&";
+        authCodeRequest += "redirect_uri=" + redirectUri + "&";
+        authCodeRequest += "scope=user_profile,user_media&";
+        authCodeRequest += "response_type=code";
 
 
-            RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
 
-            HttpEntity<String> authCodeHttpEntity = new HttpEntity<>(authCodeRequest, headers);
-            restTemplate.postForObject(authorizeUri, authCodeHttpEntity, String.class);
-        }
-
-
-        catch (URISyntaxException exception)
-        {
-            model.addAttribute("error", exception.getReason());
-        }
+        restTemplate.getForObject(authCodeRequest, String.class);
         return "index";
     }
 }
