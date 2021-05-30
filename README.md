@@ -1,1 +1,1 @@
-# insta-lookup
+# githubAPI
